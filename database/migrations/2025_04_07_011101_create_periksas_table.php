@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('catatan')->nullable();
             $table->integer('biaya_periksa')->nullable();
             $table->text('diagnosa')->nullable();
-            $table->timestamps();
         });
     }
 
@@ -27,10 +26,7 @@ return new class extends Migration
      * Reverse the migrations.
      */
     public function down(): void
-    {   
-        Schema::table('periksas', function (Blueprint $table) {
-            $table->dropTimestamps();
-        });
+    {
         Schema::dropIfExists('periksas');
     }
 };

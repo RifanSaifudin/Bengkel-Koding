@@ -1,70 +1,52 @@
 @extends('layouts.app')
 
 @section('content')
-@if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
+<div class="content-header">
+    <h4>Daftar Pasien untuk Diperiksa</h4>
+</div>
+
+@if(session('success'))
+<div class="alert alert-success">{{ session('success') }}</div>
 @endif
-<section class="content-header">
-    <h1>Dokter <small>Daftar Periksa Pasien</small></h1>
-</section>
 
-<section class="content">
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h3 class="card-title">Data Pemeriksaan</h3>
-        </div>
-        <div class="card-body">
-            @if(session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            <table class="table table-bordered table-striped">
-                <thead class="bg-secondary text-white">
+<div class="card">
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Pasien</th>
+                    <th>Keluhan</th>
+                    <th>Tanggal</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($periksas as $periksa)
                     <tr>
-                        <th width="5%">NO</th>
-                        <th>ID Periksa</th>
-                        <th>Pasien</th>
-                        <th>Tanggal Periksa</th>
-                        <th>Catatan</th>
-                        <th>Biaya Periksa</th>
-                        <th>Diagnosa</th> <!-- Tambahkan kolom Diagnosa -->
-                        <th>Obat</th>
-                        <th width="15%">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($periksas as $index => $periksa)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $periksa->id }}</td>
-                        <td>{{ $periksa->pasien->name }}</td>
-                        <td>{{ \Carbon\Carbon::parse($periksa->tgl_periksa)->format('d-m-Y') }}</td>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $periksa->pasien->name ?? '-' }}</td>
                         <td>{{ $periksa->catatan }}</td>
-                        <td>Rp {{ number_format($periksa->biaya_periksa, 0, ',', '.') }}</td>
-                        <td>{{ $periksa->diagnosa ?? 'Belum ada diagnosa' }}</td> <!-- Menampilkan Diagnosa -->
+                        <td>{{ \Carbon\Carbon::parse($periksa->tgl_periksa)->format('d M Y') }}</td>
                         <td>
-                            @if($periksa->detailPeriksa->count() > 0)
-                                <ul class="mb-0 pl-3">
-                                    @foreach($periksa->detailPeriksa as $detail)
-                                        <li>{{ $detail->obat->nama_obat ?? '-' }}</li>
-                                    @endforeach
-                                </ul>
+                            <span class="badge {{ $periksa->diagnosa ? 'badge-success' : 'badge-warning' }}">
+                                {{ $periksa->diagnosa ? 'Sudah Diperiksa' : 'Belum' }}
+                            </span>
+                        </td>
+                        <td>
+                            @if($periksa->diagnosa)
+                                <a href="{{ route('dokter.periksa.edit', $periksa->id) }}" class="btn btn-sm btn-secondary">Edit</a>
                             @else
-                                <em>Tidak ada obat</em>
+                                <a href="{{ route('dokter.periksa.show', $periksa->id) }}" class="btn btn-sm btn-primary">Periksa</a>
                             @endif
                         </td>
-                        <td>
-                            <a href="{{ route('dokter.periksa.show', $periksa->id) }}" class="btn btn-primary btn-sm">Periksa</a>
-                        </td>
                     </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                @empty
+                    <tr><td colspan="7">Tidak ada data</td></tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
-</section>
+</div>
 @endsection

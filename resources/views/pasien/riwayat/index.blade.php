@@ -1,50 +1,55 @@
 @extends('layouts.app')
 
-@section('content')
-@if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
-<section class="content-header">
-    <h1>Pasien <small>Riwayat Pemeriksaan</small></h1>
-</section>
-
-<section class="content">
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h3 class="card-title">Riwayat Pemeriksaan</h3>
+@section('title', 'Riwayat Periksa')
+@section('content_header_title', 'Riwayat Periksa')
+@section('content_body')
+    <section class="content">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h3 class="card-title">Data Riwayat Pemeriksaan</h3>
+            </div>
+            <div class="card-body">
+                @if($riwayat->isEmpty())
+                    <p class="text-muted">Belum ada riwayat pemeriksaan.</p>
+                @else
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Tanggal</th>
+                                <th>Dokter</th>
+                                <th>Poli</th>
+                                <th>Catatan</th>
+                                <th>Keluhan</th>
+                                <th>Obat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($riwayat as $index => $periksa)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($periksa->tgl_periksa)->format('d-m-Y') }}</td>
+                                    <td>{{ $periksa->dokter->name ?? '-' }}</td>
+                                    <td>{{ $periksa->poli->nama_poli ?? '-' }}</td>
+                                    <td>{{ $periksa->diagnosa ?? '-' }}</td>
+                                    <td>{{ $periksa->catatan ?? '-' }}</td>
+                                    <td>
+                                        @if($periksa->detailPeriksa->count() > 0)
+                                            <ul>
+                                                @foreach($periksa->detailPeriksa as $detail)
+                                                    <li>{{ $detail->obat->nama_obat ?? '-' }}</li>
+                                                @endforeach
+                                            </ul>
+                                        @else
+                                            <em>Tidak ada obat</em>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @endif
+            </div>
         </div>
-        <div class="card-body">
-            @if($periksas->isEmpty())
-                <p>Tidak ada riwayat pemeriksaan.</p>
-            @else
-                <table class="table table-bordered table-striped">
-                    <thead class="bg-secondary text-white">
-                        <tr>
-                            <th width="5%">NO</th>
-                            <th>ID Periksa</th>
-                            <th>Tanggal Periksa</th>
-                            <th>Catatan</th>
-                            <th>Diagnosa</th>
-                            <th>Biaya Periksa</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($periksas as $index => $periksa)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $periksa->id }}</td>
-                            <td>{{ \Carbon\Carbon::parse($periksa->tgl_periksa)->format('d-m-Y') }}</td>
-                            <td>{{ $periksa->catatan }}</td>
-                            <td>{{ $periksa->diagnosa ?? 'Belum ada diagnosa' }}</td>
-                            <td>Rp {{ number_format($periksa->biaya_periksa, 0, ',', '.') }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @endif
-        </div>
-    </div>
-</section>
+    </section>
 @endsection

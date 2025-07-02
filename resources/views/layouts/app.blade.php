@@ -1,14 +1,18 @@
 @extends('adminlte::page')
 
-{{-- Extend and customize the browser title --}}
+@php
+    use Illuminate\Support\Facades\Auth;
+@endphp
 
+{{-- Title --}}
 @section('title')
     {{ config('adminlte.title') }}
-    @hasSection('subtitle') | @yield('subtitle') @endif
+    @hasSection('subtitle')
+        | @yield('subtitle')
+    @endif
 @stop
 
-{{-- Extend and customize the page content header --}}
-
+{{-- Content Header --}}
 @section('content_header')
     @hasSection('content_header_title')
         <h1 class="text-muted">
@@ -24,16 +28,14 @@
     @endif
 @stop
 
-{{-- Rename section content to content_body --}}
-
+{{-- Main Content --}}
 @section('content')
     @yield('content_body')
 @stop
 
-{{-- Create a common footer --}}
-
+{{-- Footer --}}
 @section('footer')
-    <div class="float-right">
+    <div class="float-end">
         Version: {{ config('app.version', '1.0.0') }}
     </div>
 
@@ -44,24 +46,22 @@
     </strong>
 @stop
 
-{{-- Add common Javascript/Jquery code --}}
-
+{{-- Global JS --}}
 @push('js')
 <script>
-
     $(document).ready(function() {
-        // Add your common script logic here...
+        // Tambahkan script JS umum di sini
     });
-
 </script>
 @endpush
 
-{{-- Add common CSS customizations --}}
+{{-- Additional JS --}}
+@stack('js')
 
+{{-- Custom CSS --}}
 @push('css')
 <style type="text/css">
-
-    {{-- You can add AdminLTE customizations here --}}
+    /* Custom AdminLTE Styles */
     /*
     .card-header {
         border-bottom: none;
@@ -70,6 +70,5 @@
         font-weight: 600;
     }
     */
-
 </style>
 @endpush

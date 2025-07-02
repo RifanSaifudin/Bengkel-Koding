@@ -1,3 +1,7 @@
+@php
+    use Illuminate\Support\Facades\View;
+@endphp
+
 @inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
 
 @php( $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home') )
@@ -25,5 +29,4 @@
     <span class="brand-text font-weight-light {{ config('adminlte.classes_brand_text') }}">
         {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
     </span>
-
 </a>

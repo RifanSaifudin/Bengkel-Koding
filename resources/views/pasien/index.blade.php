@@ -19,9 +19,10 @@
             @if($latestPeriksa)
                 <p><strong>ID Pemeriksaan:</strong> {{ $latestPeriksa->id }}</p>
                 <p><strong>Tanggal Periksa:</strong> {{ \Carbon\Carbon::parse($latestPeriksa->tgl_periksa)->format('d-m-Y') }}</p>
-                <p><strong>Catatan:</strong> {{ $latestPeriksa->catatan }}</p>
-                <p><strong>Diagnosa:</strong> {{ $latestPeriksa->diagnosa ?? 'Belum ada diagnosa' }}</p>
+                <p><strong>Keluhan:</strong> {{ $latestPeriksa->catatan }}</p>
+                <p><strong>Catatan:</strong> {{ $latestPeriksa->diagnosa ?? 'Belum ada diagnosa' }}</p>
                 <p><strong>Biaya Periksa:</strong> Rp {{ number_format($latestPeriksa->biaya_periksa, 0, ',', '.') }}</p>
+                <p><strong>Poli:</strong> {{ $latestPeriksa->poli->nama_poli ?? '-' }}</p>
             @else
                 <p>Belum ada pemeriksaan yang tercatat.</p>
             @endif

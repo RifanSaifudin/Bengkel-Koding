@@ -23,6 +23,11 @@ class RoleMiddleware
             abort(403, 'Kamu tidak memiliki akses ke halaman ini.');
         }
     
+        // // return $next($request);
+        // if (!in_array(auth()->user()->role, $roles)) {
+        //     abort(403, 'Kamu tidak memiliki akses ke halaman ini.');
+        // }
+
         return $next($request);
     }
 }

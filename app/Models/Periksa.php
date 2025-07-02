@@ -18,10 +18,14 @@ class Periksa extends Model
     protected $fillable = [
         'id_pasien',
         'id_dokter',
+        'poli_id',
+        'jadwal_id',
         'tgl_periksa',
         'catatan',
         'biaya_periksa',
         'diagnosa',
+        'no_antrian',
+        'status',
     ];
 
     // Relasi dengan model User (Pasien)
@@ -47,4 +51,15 @@ class Periksa extends Model
     {
         return $this->hasMany(DetailPeriksa::class, 'id_periksa');
     }
+
+    public function poli()
+    {
+        return $this->belongsTo(Poli::class, 'poli_id');
+    }
+
+    public function jadwal()
+    {
+        return $this->belongsTo(JadwalPeriksa::class, 'jadwal_id');
+    }
+
 }

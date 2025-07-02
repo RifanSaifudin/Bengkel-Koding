@@ -1,3 +1,8 @@
+@php
+    use Illuminate\Support\Facades\View;
+    use Illuminate\Support\Facades\Auth;
+@endphp
+
 @php( $logout_url = View::getSection('logout_url') ?? config('adminlte.logout_url', 'logout') )
 @php( $profile_url = View::getSection('profile_url') ?? config('adminlte.profile_url', 'logout') )
 
@@ -14,7 +19,6 @@
 @endif
 
 <li class="nav-item dropdown user-menu">
-
     {{-- User menu toggler --}}
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
         @if(config('adminlte.usermenu_image'))
@@ -82,5 +86,4 @@
         </li>
 
     </ul>
-
 </li>

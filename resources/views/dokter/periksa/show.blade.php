@@ -1,67 +1,74 @@
 @extends('layouts.app')
 
 @section('content')
-@if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
-<section class="content-header">
-    <h1>Dokter <small>Periksa Pasien</small></h1>
-</section>
+<div class="content-header">
+    <h4>Form Pemeriksaan Pasien</h4>
+</div>
 
-<section class="content">
+<form method="POST" action="{{ route('dokter.periksa.store', $periksa->id) }}">
+    @csrf
     <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h3 class="card-title">Detail Periksa</h3>
-        </div>
         <div class="card-body">
             <p><strong>Nama Pasien:</strong> {{ $periksa->pasien->name }}</p>
-            <p><strong>Dokter:</strong> {{ $periksa->dokter->name }}</p>
-            <p><strong>Tanggal Periksa:</strong> {{ \Carbon\Carbon::parse($periksa->tgl_periksa)->format('d-m-Y') }}</p>
-            <p><strong>Catatan:</strong> {{ $periksa->catatan }}</p>
-            <p><strong>Biaya Periksa:</strong> Rp {{ number_format($periksa->biaya_periksa, 0, ',', '.') }}</p>
-            <p><strong>Diagnosa:</strong> {{ $periksa->diagnosa }}</p>
+            <p><strong>Keluhan:</strong> {{ $periksa->catatan }}</p>
 
-            <!-- Menampilkan pesan error jika ada -->
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            <div class="form-group">
+                <label>Diagnosa</label>
+                <textarea name="diagnosa" class="form-control" required></textarea>
+            </div>
 
-            <form action="{{ route('dokter.periksa.store') }}" method="POST">
-                @csrf
-                <input type="hidden" name="id_periksa" value="{{ $periksa->id }}">
+            <div class="form-group">
+                <label>Obat</label>
+                @foreach($obats as $obat)
+                    <div class="form-check">
+                        <input class="form-check-input obat-checkbox" type="checkbox" name="obat_id[]" value="{{ $obat->id }}" id="obat{{ $obat->id }}" data-harga="{{ $obat->harga }}">
+                        <label class="form-check-label" for="obat{{ $obat->id }}">
+                            {{ $obat->nama_obat }} - Rp{{ number_format($obat->harga, 0, ',', '.') }}
+                        </label>
+                    </div>
+                @endforeach
+            </div>
 
-                <div class="form-group">
-                    <label for="diagnosa">Diagnosa:</label>
-                    <textarea name="diagnosa" class="form-control" rows="4">{{ old('diagnosa', $periksa->diagnosa) }}</textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="obat">Pilih Obat:</label>
-                    <select name="obat_id[]" class="form-control" multiple>
-                        @foreach($obats as $obat)
-                            <option value="{{ $obat->id }}">
-                                {{ $obat->nama_obat }} ({{ $obat->kemasan }}) - Rp {{ number_format($obat->harga, 0, ',', '.') }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="biaya_periksa">Biaya Periksa:</label>
-                    <input type="text" name="biaya_periksa" class="form-control" value="{{ old('biaya_periksa', $periksa->biaya_periksa) }}">
-                </div>
-
-                <button type="submit" class="btn btn-success">Simpan</button>
-            </form>
+            <div class="form-group">
+                <label>Total Biaya Pemeriksaan</label>
+                <input type="text" id="total_harga" class="form-control" readonly>
+                <input type="hidden" name="biaya_periksa" id="hidden_biaya">
+            </div>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-primary" type="submit">Simpan</button>
+            <a href="{{ route('dokter.periksa.index') }}" class="btn btn-secondary">Batal</a>
         </div>
     </div>
-</section>
+</form>
 @endsection
+
+@push('js')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const hargaTetap = 75000;
+        const checkboxes = document.querySelectorAll('.obat-checkbox');
+        const tampil = document.getElementById('total_harga');
+        const hidden = document.getElementById('hidden_biaya');
+
+        function updateHarga() {
+            let totalObat = 0;
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    totalObat += parseInt(cb.dataset.harga);
+                }
+            });
+
+            const total = hargaTetap + totalObat;
+            tampil.value = 'Rp' + total.toLocaleString('id-ID');
+            hidden.value = total;
+        }
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', updateHarga);
+        });
+
+        updateHarga(); // Jalankan saat halaman pertama kali terbuka
+    });
+</script>
+@endpush

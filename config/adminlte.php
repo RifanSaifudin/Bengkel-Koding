@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'Klinik Ora Sehat',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>ORA</b>SEHAT',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -154,7 +154,7 @@ return [
 
     'layout_topnav' => null,
     'layout_boxed' => null,
-    'layout_fixed_sidebar' => null,
+    'layout_fixed_sidebar' => true,
     'layout_fixed_navbar' => null,
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
@@ -299,7 +299,7 @@ return [
     */
 
     'menu' => [
-    // Navbar items:
+        // Navbar items:
         [
             'type' => 'navbar-search',
             'text' => 'search',
@@ -311,65 +311,32 @@ return [
         ],
 
         // Sidebar items:
-        ['header' => 'DOKTER'],
+        ['header' => 'MENU ADMIN'],
         [
             'text' => 'Dashboard',
-            'url'  => 'dokter/dashboard',
+            'url'  => 'admin/dashboard',
             'icon' => 'fas fa-fw fa-tachometer-alt',
-            'can'  => 'isDokter',
         ],
         [
-            'text' => 'Jadwal Praktek',
-            'url'  => 'dokter/jadwal',
-            'icon' => 'fas fa-fw fa-calendar-alt',
+            'text' => 'Dokter',
+            'url'  => 'admin/dokter',
+            'icon' => 'fas fa-fw fa-user-md',
         ],
         [
-            'text' => 'Daftar Pasien',
-            'url'  => 'dokter/pasien',
+            'text' => 'Pasien',
+            'url'  => 'admin/pasien',
             'icon' => 'fas fa-fw fa-users',
         ],
         [
-            'text' => 'Riwayat Pemeriksaan',
-            'url'  => 'dokter/riwayat',
-            'icon' => 'fas fa-fw fa-file-medical-alt',
-        ],
-
-        ['header' => 'PASIEN'],
-        [
-            'text' => 'Dashboard',
-            'url'  => 'pasien/dashboard',
-            'icon' => 'fas fa-fw fa-tachometer-alt',
-            'can'  => 'isPasien',
+            'text' => 'Poli',
+            'url'  => 'admin/poli',
+            'icon' => 'fas fa-fw fa-hospital',
         ],
         [
-            'text' => 'Cari Dokter',
-            'url'  => 'pasien/cari-dokter',
-            'icon' => 'fas fa-fw fa-search',
+            'text' => 'Obat',
+            'url'  => 'admin/obat',
+            'icon' => 'fas fa-fw fa-pills',
         ],
-        [
-            'text' => 'Buat Janji',
-            'url'  => 'pasien/janji',
-            'icon' => 'fas fa-fw fa-calendar-check',
-        ],
-        [
-            'text' => 'Riwayat Konsultasi',
-            'url'  => 'pasien/riwayat',
-            'icon' => 'fas fa-fw fa-notes-medical',
-        ],
-
-        ['header' => 'AKUN'],
-        [
-            'text' => 'Profil Saya',
-            'url'  => 'profile',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'Logout',
-            'url'  => 'logout',
-            'icon' => 'fas fa-fw fa-sign-out-alt',
-        ],
-
-        // Tambahan menu lainnya
         [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
@@ -452,7 +419,6 @@ return [
             'url' => '#',
         ],
     ],
-
 
     /*
     |--------------------------------------------------------------------------

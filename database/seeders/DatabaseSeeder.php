@@ -11,7 +11,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Panggil UserSeeder agar data user masuk
         $this->call([
+            PoliSeeder::class,
             UserSeeder::class,
         ]);
     }

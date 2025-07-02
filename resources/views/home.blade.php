@@ -1,30 +1,23 @@
-<?php
+@extends('layouts.app')
 
-namespace App\Http\Controllers;
+@section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">{{ __('Selamat Datang') }}</div>
 
-use Illuminate\Http\Request;
+                <div class="card-body">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
 
-class HomeController extends Controller
-{
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    public function index()
-    {
-        // Cek role user yang login
-        if (auth()->user()->role == 'dokter') {
-            return redirect()->route('dokter.periksa.index'); // Route dokter
-        } elseif (auth()->user()->role == 'pasien') {
-            return redirect()->route('pasien.dashboard'); // Route pasien
-        } else {
-            return view('home'); // Kalau role tidak ada (misal admin) tetap tampilkan home biasa
-        }
-    }
-
-    public function dokter()
-    {
-        return view('dokter.index');
-    }
-}
+                    {{ __('Klinik Ora Sehat!') }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
